@@ -136,15 +136,15 @@ function findWDA() {
 
 checkAndInstallBrew
 checkAndInstallNode
-if [ "$1" == "android" ]; then
+if [ "$0" == "android" ]; then
   installAndroidDependencies
-elif [ "$1" == "ios" ]; then
+elif [ "$0" == "ios" ]; then
   installiOSDependencies
 else
   installAndroidDependencies
   installiOSDependencies
 fi
 installAppiumAndBarista
-if [ "$1" != "android" ]; then
+if [ "$0" != "android" ]; then
   findWDA
 fi

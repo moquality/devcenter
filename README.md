@@ -34,9 +34,9 @@ Barista is a low code test creating tool that MoQuality has built to help you to
 npm install -g barista-agent
 ```
 
-#### Appium
-
 The rest of the setup is needed for **Appium** to work with either Android or iOS devices.
+
+#### Appium for Android
 
 If you want to setup for Android, you only need to install the Android SDK and setup `ANDROID_HOME`. The easiest way to do this is to use brew
 
@@ -55,6 +55,8 @@ Setup `ANDROID_HOME` using
 ```
 export ANDROID_HOME=/usr/local/share/android-sdk
 ```
+
+#### Appium for iOS
 
 If you want to setup for iOS, you need to install `libimobiledevice` to do "certain things" [[1](https://github.com/appium/appium-xcuitest-driver)]
 

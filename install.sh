@@ -36,7 +36,7 @@ function installAndroidDependencies() {
   echo "Installing Android Dependencies ..."
   brew tap caskroom/cask
   brew cask install android-sdk
-  sdkmanager "build-tools;27.0.3"\n
+  sdkmanager "build-tools;27.0.3"
   sdkmanager "platform-tools" "platforms;android-28"
   export ANDROID_HOME=/usr/local/share/android-sdk
 }

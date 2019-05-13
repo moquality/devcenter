@@ -47,32 +47,38 @@ function installiOSDependencies() {
   fi
 }
 
+
 function installAndroidDependencies() {
   echo "Installing Android Dependencies ..."
   if [[ -z "${ANDROID_HOME}" ]]; then
-    echo "$ANDROID_HOME is not set"
+    echo "ANDROID_HOME is not set"
     echo -n "Do you want to install Android SDK (y/n)? "
     read answer
     if [ "$answer" != "${answer#[Yy]}" ] ;then
       brew tap caskroom/cask
       brew cask install android-sdk
-      echo "Add export ANDROID_HOME=/usr/local/share/android-sdk to you shell"
+      export ANDROID_HOME="/usr/local/share/android-sdk"
+      installAndroidDependencies
+      echo "Add the following to your shell"
+      echo "export ANDROID_HOME=/usr/local/share/android-sdk"
     else
-      echo "You need Android SDK to continue"
+      echo "You need Android SDK to continue. [ERROR]"
     fi
 
   else
-    ADB="$(find $ANDROID_HOME -name adb)"
-    AAPT="$(find $ANDROID_HOME -name aapt)"
+    echo "ANDROID_HOME=${ANDROID_HOME}"
+    ADB="$(find ${ANDROID_HOME}/* -name adb)"
+    AAPT="$(find ${ANDROID_HOME}/* -name aapt)"
 
     if [[ -z "$ADB" ]]; then
-      SDKMANAGER="$(find $ANDROID_HOME -name sdkmanager)"
+      SDKMANAGER="$(find ${ANDROID_HOME}/* -name sdkmanager)"
+      echo "Found sdkmanager at $SDKMANAGER"
       if [[ -z "$SDKMANAGER" ]]; then
         echo "Cannot find sdkmanager. Install adb. [ERROR]"
       else
         echo "Installing platform-tools ..."
         ($SDKMANAGER "platform-tools")
-        ADB="$(find $ANDROID_HOME -name adb)"
+        ADB="$(find ${ANDROID_HOME} -name adb)"
         echo "adb is in $ADB"
       fi
     else
@@ -80,13 +86,14 @@ function installAndroidDependencies() {
     fi
 
     if [[ -z "$AAPT" ]]; then
-      SDKMANAGER="$(find $ANDROID_HOME -name sdkmanager)"
+      SDKMANAGER="$(find ${ANDROID_HOME}/* -name sdkmanager)"
+      echo "Found sdkmanager at $SDKMANAGER"
       if [[ -z "$SDKMANAGER" ]]; then
         echo "Cannot find sdkmanager. Install aapt. [ERROR]"
       else
         echo "Installing build-tools ..."
         ($SDKMANAGER "build-tools;28.0.3")
-        AAPT="$(find $ANDROID_HOME -name aapt)"
+        AAPT="$(find ${ANDROID_HOME} -name aapt)"
         echo "aapt is in $AAPT"
       fi
     else
@@ -122,5 +129,6 @@ function findWDA() {
 checkAndInstallBrew
 checkAndInstallNode
 installiOSDependencies
+installAndroidDependencies
 installAppiumAndBarista
 findWDA

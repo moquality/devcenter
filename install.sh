@@ -1,5 +1,13 @@
 #!/bin/bash
 
+cecho(){
+    RED="\033[0;31m"
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    NC='\033[0m' # No Color
+    printf "${!1}${2} ${NC}\n"
+}
+
 function checkAndInstallNode() {
   echo "Checking if Node is installed ..."
   if ! command node --version &>/dev/null; then
@@ -60,9 +68,9 @@ function installAndroidDependencies() {
       export ANDROID_HOME="/usr/local/share/android-sdk"
       installAndroidDependencies
       echo "Add the following to your shell"
-      echo "export ANDROID_HOME=/usr/local/share/android-sdk"
+      cecho "GREEN" "export ANDROID_HOME=/usr/local/share/android-sdk"
     else
-      echo "You need Android SDK to continue. [ERROR]"
+      cecho "RED" "You need Android SDK to continue. [ERROR]"
     fi
 
   else
@@ -128,7 +136,15 @@ function findWDA() {
 
 checkAndInstallBrew
 checkAndInstallNode
-installiOSDependencies
-installAndroidDependencies
+if [ "$1" == "android" ]; then
+  installAndroidDependencies
+elif [ "$1" == "ios" ]; then
+  installiOSDependencies
+else
+  installAndroidDependencies
+  installiOSDependencies
+fi
 installAppiumAndBarista
-findWDA
+if [ "$1" != "android" ]; then
+  findWDA
+fi

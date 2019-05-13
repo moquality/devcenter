@@ -67,7 +67,20 @@ function installAppiumAndBarista() {
   npm install -g barista-agent
 }
 
+function findWDA() {
+  APPIUMPATH="$(which appium)"
+  APPIUMDIR="$(echo $APPIUMPATH | sed -e "s/\/bin\/appium//g" )"
+  WDAPATH="$(find $APPIUMDIR -name WebDriverAgent.xcodeproj)"
+  echo "WebDriverAgent is at $WDAPATH"
+  echo -n "Do you want to open WebDriverAgent in Xcode (y/n)? "
+  read answer
+  if [ "$answer" != "${answer#[Yy]}" ] ;then
+    open $WDAPATH
+  fi
+}
+
 checkAndInstallBrew
 checkAndInstallNode
 installiOSDependencies
 installAppiumAndBarista
+findWDA

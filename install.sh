@@ -49,11 +49,51 @@ function installiOSDependencies() {
 
 function installAndroidDependencies() {
   echo "Installing Android Dependencies ..."
-  brew tap caskroom/cask
-  brew cask install android-sdk
-  sdkmanager "build-tools;27.0.3"
-  sdkmanager "platform-tools" "platforms;android-28"
-  export ANDROID_HOME=/usr/local/share/android-sdk
+  if [[ -z "${ANDROID_HOME}" ]]; then
+    echo "$ANDROID_HOME is not set"
+    echo -n "Do you want to install Android SDK (y/n)? "
+    read answer
+    if [ "$answer" != "${answer#[Yy]}" ] ;then
+      brew tap caskroom/cask
+      brew cask install android-sdk
+      echo "Add export ANDROID_HOME=/usr/local/share/android-sdk to you shell"
+    else
+      echo "You need Android SDK to continue"
+    fi
+
+  else
+    ADB="$(find $ANDROID_HOME -name adb)"
+    AAPT="$(find $ANDROID_HOME -name aapt)"
+
+    if [[ -z "$ADB" ]]; then
+      SDKMANAGER="$(find $ANDROID_HOME -name sdkmanager)"
+      if [[ -z "$SDKMANAGER" ]]; then
+        echo "Cannot find sdkmanager. Install adb. [ERROR]"
+      else
+        echo "Installing platform-tools ..."
+        ($SDKMANAGER "platform-tools")
+        ADB="$(find $ANDROID_HOME -name adb)"
+        echo "adb is in $ADB"
+      fi
+    else
+      echo "Found adb"
+    fi
+
+    if [[ -z "$AAPT" ]]; then
+      SDKMANAGER="$(find $ANDROID_HOME -name sdkmanager)"
+      if [[ -z "$SDKMANAGER" ]]; then
+        echo "Cannot find sdkmanager. Install aapt. [ERROR]"
+      else
+        echo "Installing build-tools ..."
+        ($SDKMANAGER "build-tools;28.0.3")
+        AAPT="$(find $ANDROID_HOME -name aapt)"
+        echo "aapt is in $AAPT"
+      fi
+    else
+      echo "Found aapt"
+    fi
+
+  fi
 }
 
 function installAppiumAndBarista() {

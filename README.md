@@ -56,6 +56,8 @@ Setup `ANDROID_HOME` using
 export ANDROID_HOME=/usr/local/share/android-sdk
 ```
 
+Read more about Android setup on [Appium Docs](http://appium.io/docs/en/drivers/android-uiautomator2/index.html).
+
 #### Appium for iOS
 
 If you want to setup for iOS, you need to install `libimobiledevice` to do "certain things" [[1](https://github.com/appium/appium-xcuitest-driver)]

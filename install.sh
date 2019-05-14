@@ -5,7 +5,7 @@ cecho(){
     GREEN='\033[0;32m'
     YELLOW='\033[1;33m'
     NC='\033[0m' # No Color
-    printf "${!1}${2} ${NC}\n"
+    printf "\n\t${!1}${2} ${NC}\n\n"
 }
 
 function checkAndInstallNode() {

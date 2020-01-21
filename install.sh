@@ -111,15 +111,15 @@ function installAndroidDependencies() {
   fi
 }
 
-function installAppiumAndBarista() {
+function installAppiumAndMQLab() {
   if ! command appium --version &>/dev/null; then
     echo "Installing Appium ..."
     npm install -g appium
   else
     echo "appium $(appium --version) is installed."
   fi
-  echo "Installing Barista Agent ..."
-  npm install -g barista-agent
+  echo "Installing MQ Lab ..."
+  npm install -g @moquality/mqlab
 }
 
 function findWDA() {
@@ -144,7 +144,7 @@ else
   installAndroidDependencies
   installiOSDependencies
 fi
-installAppiumAndBarista
+installAppiumAndMQLab
 if [ "$0" != "android" ]; then
   findWDA
 fi
